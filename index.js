@@ -159,6 +159,76 @@ app.post("/cinemas", async (req, res) => {
 // --------------------------------- //
 
 // USER START
+app.get("/users", async (req, res) => {
+  try {
+    const request = await database`SELECT * FROM users`;
+
+    res.json({
+      status: true,
+      message: "Get data success",
+      data: request,
+    });
+  } catch (error) {
+    res.status(502).json({
+      status: false,
+      message: "Something wrong in our server",
+      data: [],
+    });
+  }
+});
+
+app.get("/users/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const request = await database`SELECT * FROM users WHERE id = ${id}`;
+
+    res.json({
+      status: true,
+      message: "Get data success",
+      data: request,
+    });
+  } catch (error) {
+    res.status(502).json({
+      status: false,
+      message: "Something wrong in our server",
+      data: [],
+    });
+  }
+});
+
+app.post("/users", async (req, res) => {
+  try {
+    const { first_name, last_name, phone_number, email, password, photo_profile } = req.body;
+
+    const isInputValid = first_name && last_name && phone_number && email && password && photo_profile;
+
+    // check if input is valid
+    if (!isInputValid) {
+      res.status(400).json({
+        status: false,
+        message: "Bad input, please make sure your input is completed",
+      });
+    }
+
+    const request = await database`INSERT INTO users
+      (first_name, last_name, phone_number, email, password, price)
+    values
+      (${first_name}, ${last_name}, ${phone_number}, ${email}, ${password}, ${photo_profile}) RETURNING id`;
+
+    if (request.length > 0) {
+      res.json({
+        status: true,
+        message: "Insert data success",
+      });
+    }
+  } catch (error) {
+    res.status(502).json({
+      status: false,
+      message: "Something wrong in our server",
+      data: [],
+    });
+  }
+});
 // USER END
 
 app.listen(port, () => {
