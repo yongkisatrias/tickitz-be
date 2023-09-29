@@ -135,7 +135,7 @@ app.post("/cinemas", async (req, res) => {
       });
     }
 
-    const request = await database`INSERT INTO movies
+    const request = await database`INSERT INTO cinemas
       (movie_id, name, city, addres, show_times, price, logo)
     values
       (${movie_id}, ${name}, ${city}, ${addres}, ${show_times}, ${price}, ${logo}) RETURNING id`;
@@ -211,7 +211,7 @@ app.post("/users", async (req, res) => {
     }
 
     const request = await database`INSERT INTO users
-      (first_name, last_name, phone_number, email, password, price)
+    (first_name, last_name, phone_number, email, password, photo_profile)
     values
       (${first_name}, ${last_name}, ${phone_number}, ${email}, ${password}, ${photo_profile}) RETURNING id`;
 
