@@ -13,7 +13,7 @@ app.get("/movies", async (req, res) => {
   try {
     const request = await database`SELECT id, name, duration, genres, poster FROM movies`;
 
-    res.json({
+    res.status(200).json({
       status: true,
       message: "Get data success",
       data: request,
@@ -32,7 +32,7 @@ app.get("/movies/:id", async (req, res) => {
     const { id } = req.params;
     const request = await database`SELECT * FROM movies WHERE id = ${id}`;
 
-    res.json({
+    res.status(200).json({
       status: true,
       message: "Get data success",
       data: request,
@@ -66,7 +66,7 @@ app.post("/movies", async (req, res) => {
       (${name}, ${release_date}, ${duration}, ${genres}, ${directed_by}, ${casts}, ${synopsis}, ${poster}) RETURNING id`;
 
     if (request.length > 0) {
-      res.json({
+      res.status(201).json({
         status: true,
         message: "Insert data success",
       });
@@ -88,7 +88,7 @@ app.get("/cinemas", async (req, res) => {
   try {
     const request = await database`SELECT id, movie_id, name, city, addres, price, logo FROM cinemas`;
 
-    res.json({
+    res.status(200).json({
       status: true,
       message: "Get data success",
       data: request,
@@ -107,7 +107,7 @@ app.get("/cinemas/:id", async (req, res) => {
     const { id } = req.params;
     const request = await database`SELECT * FROM cinemas WHERE id = ${id}`;
 
-    res.json({
+    res.status(200).json({
       status: true,
       message: "Get data success",
       data: request,
@@ -141,7 +141,7 @@ app.post("/cinemas", async (req, res) => {
       (${movie_id}, ${name}, ${city}, ${addres}, ${show_times}, ${price}, ${logo}) RETURNING id`;
 
     if (request.length > 0) {
-      res.json({
+      res.status(201).json({
         status: true,
         message: "Insert data success",
       });
@@ -163,7 +163,7 @@ app.get("/users", async (req, res) => {
   try {
     const request = await database`SELECT * FROM users`;
 
-    res.json({
+    res.status(200).json({
       status: true,
       message: "Get data success",
       data: request,
@@ -182,7 +182,7 @@ app.get("/users/:id", async (req, res) => {
     const { id } = req.params;
     const request = await database`SELECT * FROM users WHERE id = ${id}`;
 
-    res.json({
+    res.status(200).json({
       status: true,
       message: "Get data success",
       data: request,
@@ -216,7 +216,7 @@ app.post("/users", async (req, res) => {
       (${first_name}, ${last_name}, ${phone_number}, ${email}, ${password}, ${photo_profile}) RETURNING id`;
 
     if (request.length > 0) {
-      res.json({
+      res.status(201).json({
         status: true,
         message: "Insert data success",
       });
