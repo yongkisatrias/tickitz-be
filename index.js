@@ -53,9 +53,37 @@ app.get("/movies/:id", async (req, res) => {
 
 // New Movie
 app.post("/movies", async (req, res) => {
-  const { name, release_date, duration, genres, directed_by, casts, synopsis, poster } = req.body;
-  const request = await database`INSERT INTO movies (name, release_date, duration, genres, directed_by, casts, synopsis, poster) VALUES(${name}, ${release_date}, ${duration}, ${genres}, ${directed_by}, ${casts}, ${synopsis}, ${poster})`;
-  res.send("Data created");
+  try {
+    const { name, release_date, duration, genres, directed_by, casts, synopsis, poster } = req.body;
+
+    const isInputValid = name && release_date && duration && genres && directed_by && casts && synopsis && poster;
+
+    // check if input is valid
+    if (!isInputValid) {
+      res.status(400).json({
+        status: false,
+        message: "Bad input, please make sure your input is completed",
+      });
+    }
+
+    const request = await database`INSERT INTO movies
+      (name, release_date, duration, genres, directed_by, casts, synopsis, poster)
+    values
+      (${name}, ${release_date}, ${duration}, ${genres}, ${directed_by}, ${casts}, ${synopsis}, ${poster}) RETURNING id`;
+
+    if (request.length > 0) {
+      res.status(201).json({
+        status: true,
+        message: "Insert data success",
+      });
+    }
+  } catch (error) {
+    res.status(502).json({
+      status: false,
+      message: "Something wrong in our server",
+      data: [],
+    });
+  }
 });
 
 // Update Movie
@@ -80,7 +108,7 @@ app.delete("/movies/:id", async (req, res) => {
 // ------------------------
 
 // -- Endpoint User -- //
-// 1. Get All User (/users)
+// 1. /users
 app.get("/users", async (req, res) => {
   try {
     const request = await database`SELECT first_name, last_name, phone_number, photo_profile FROM users`;
@@ -100,7 +128,20 @@ app.get("/users", async (req, res) => {
 });
 
 // 2. /users/me
+
 // 3. /users/register
+// app.post("/users/register", async (req, res) => {
+//   try {
+//     const { first_name, last_name, phone_number, email, password, photo_profile } = req.body;
+//   } catch (error) {
+//     res.status(502).json({
+//       status: false,
+//       message: "Something wrong in our server",
+//       data: [],
+//     });
+//   }
+// });
+
 // 4. /users/login
 // 5. /users/edit
 
