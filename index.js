@@ -207,6 +207,7 @@ app.post("/users/login", async (req, res) => {
 
     const checkEmail = await database`SELECT * FROM users WHERE email = ${email}`;
 
+    // check if email registered
     if (checkEmail.length == 0) {
       res.status(400).json({
         status: false,
@@ -216,11 +217,21 @@ app.post("/users/login", async (req, res) => {
       return;
     }
 
-    res.status(202).json({
-      status: true,
-      message: "Login success",
-      data: checkEmail,
-    });
+    // check if password correct
+    const isMatch = bcrypt.compareSync(password, checkEmail[0].password);
+
+    if (isMatch) {
+      res.status(200).json({
+        status: true,
+        message: "Login success",
+        data: checkEmail,
+      });
+    } else {
+      res.status(400).json({
+        status: false,
+        message: "Incorrect password, please enter the correct password",
+      });
+    }
   } catch (error) {
     res.status(502).json({
       status: false,
