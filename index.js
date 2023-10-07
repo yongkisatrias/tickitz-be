@@ -120,7 +120,7 @@ app.delete("/movies/:id", async (req, res) => {
 // ------------------------
 
 // -- Endpoint User -- //
-// 1. /users
+// Get All Users (/users)
 app.get("/users", async (req, res) => {
   try {
     const request = await database`SELECT first_name, last_name, phone_number, photo_profile FROM users`;
@@ -139,23 +139,44 @@ app.get("/users", async (req, res) => {
   }
 });
 
-// 2. /users/me
+// /users/me
 
-// 3. /users/register
-// app.post("/users/register", async (req, res) => {
-//   try {
-//     const { first_name, last_name, phone_number, email, password, photo_profile } = req.body;
-//   } catch (error) {
-//     res.status(502).json({
-//       status: false,
-//       message: "Something wrong in our server",
-//       data: [],
-//     });
-//   }
-// });
+// New User (/users/register)
+app.post("/users/register", async (req, res) => {
+  try {
+    const { first_name, last_name, phone_number, email, password, photo_profile } = req.body;
+    const isInputValid = first_name && last_name && phone_number && email && password && photo_profile;
 
-// 4. /users/login
-// 5. /users/edit
+    // check if input is valid
+    if (!isInputValid) {
+      res.status(400).json({
+        status: false,
+        message: "Bad input, please make sure your input is completed",
+      });
+    }
+
+    const request = await database`INSERT INTO users
+      (first_name, last_name, phone_number, email, password, photo_profile)
+    values
+      (${first_name}, ${last_name}, ${phone_number}, ${email}, ${password}, ${photo_profile}) RETURNING id`;
+
+    if (request.length > 0) {
+      res.status(201).json({
+        status: true,
+        message: "Insert data success",
+      });
+    }
+  } catch (error) {
+    res.status(502).json({
+      status: false,
+      message: "Something wrong in our server",
+      data: [],
+    });
+  }
+});
+
+// /users/login
+// /users/edit
 
 app.listen(port, () => {
   console.log(`http://localhost:${port}`);
