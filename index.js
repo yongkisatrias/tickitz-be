@@ -46,11 +46,23 @@ app.get("/movies", async (req, res) => {
 
 // Get Selected Movie
 app.get("/movies/:id", async (req, res) => {
-  const id = Number(req.params.id);
-  const request = await database`SELECT * FROM movies WHERE id=${id}`;
-  res.send(request);
-});
+  try {
+    const { id } = req.params;
+    const request = await database`SELECT * FROM movies WHERE id = ${id}`;
 
+    res.status(200).json({
+      status: true,
+      message: "Get data success",
+      data: request,
+    });
+  } catch (error) {
+    res.status(502).json({
+      status: false,
+      message: "Something wrong in our server",
+      data: [],
+    });
+  }
+});
 // New Movie
 app.post("/movies", async (req, res) => {
   try {
