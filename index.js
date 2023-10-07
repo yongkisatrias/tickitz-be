@@ -80,7 +80,25 @@ app.delete("/movies/:id", async (req, res) => {
 // ------------------------
 
 // -- Endpoint User -- //
-// 1. /users
+// 1. Get All User (/users)
+app.get("/users", async (req, res) => {
+  try {
+    const request = await database`SELECT first_name, last_name, phone_number, photo_profile FROM users`;
+
+    res.status(200).json({
+      status: true,
+      message: "Get data success",
+      data: request,
+    });
+  } catch (error) {
+    res.status(502).json({
+      status: false,
+      message: "Something wrong in our server",
+      data: [],
+    });
+  }
+});
+
 // 2. /users/me
 // 3. /users/register
 // 4. /users/login
