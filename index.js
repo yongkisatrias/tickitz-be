@@ -77,6 +77,8 @@ app.post("/movies", async (req, res) => {
         status: false,
         message: "Bad input, please make sure your input is completed",
       });
+
+      return;
     }
 
     const request = await database`INSERT INTO movies
@@ -89,6 +91,8 @@ app.post("/movies", async (req, res) => {
         status: true,
         message: "Insert data success",
       });
+
+      return;
     }
   } catch (error) {
     res.status(502).json({
@@ -142,7 +146,7 @@ app.get("/users", async (req, res) => {
 
 // /users/me
 
-// New User (/users/register)
+// Register (/users/register)
 app.post("/users/register", async (req, res) => {
   try {
     const { first_name, last_name, phone_number, email, password, photo_profile } = req.body;
@@ -154,6 +158,19 @@ app.post("/users/register", async (req, res) => {
         status: false,
         message: "Bad input, please make sure your input is completed",
       });
+
+      return;
+    }
+    // check unique email
+    const checkEmail = await database`SELECT * FROM users WHERE email = ${email}`;
+
+    if (checkEmail.length > 0) {
+      res.status(400).json({
+        status: false,
+        message: "Email is already registered, please use another email",
+      });
+
+      return;
     }
 
     // hash password
@@ -171,6 +188,8 @@ app.post("/users/register", async (req, res) => {
         status: true,
         message: "Insert data success",
       });
+
+      return;
     }
   } catch (error) {
     res.status(502).json({
@@ -181,7 +200,36 @@ app.post("/users/register", async (req, res) => {
   }
 });
 
-// /users/login
+// Login (/users/login)
+app.post("/users/login", async (req, res) => {
+  try {
+    const { email, password } = req.body;
+
+    const checkEmail = await database`SELECT * FROM users WHERE email = ${email}`;
+
+    if (checkEmail.length == 0) {
+      res.status(400).json({
+        status: false,
+        message: "Email not registered",
+      });
+
+      return;
+    }
+
+    res.status(202).json({
+      status: true,
+      message: "Login success",
+      data: checkEmail,
+    });
+  } catch (error) {
+    res.status(502).json({
+      status: false,
+      message: "Something wrong in our server",
+      data: [],
+    });
+  }
+});
+
 // /users/edit
 
 app.listen(port, () => {
