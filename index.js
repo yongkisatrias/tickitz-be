@@ -1,16 +1,22 @@
-const express = require("express");
 require("dotenv").config();
+
+const express = require("express");
 const app = express();
+const port = process.env.PORT;
 const database = require("./database");
 const helmet = require("helmet");
 const cors = require("cors");
-app.use(express.json());
-let port = process.env.PORT;
 
-let corsOptions = {
+const corsOptions = {
   origin: "*",
   methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
 };
+
+// grant access for express can accept input from outside
+app.use(express.urlencoded({ extended: false }));
+
+// parse application/json
+app.use(express.json());
 
 // cors
 app.use(cors(corsOptions));
@@ -21,8 +27,21 @@ app.use(helmet());
 // -- Endpoint Movies -- //
 // Get All Movies
 app.get("/movies", async (req, res) => {
-  const request = await database`SELECT * FROM movies`;
-  res.send(request);
+  try {
+    const request = await database`SELECT id, name, duration, genres, poster FROM movies`;
+
+    res.status(200).json({
+      status: true,
+      message: "Get data success",
+      data: request,
+    });
+  } catch (error) {
+    res.status(502).json({
+      status: false,
+      message: "Something wrong in our server",
+      data: [],
+    });
+  }
 });
 
 // Get Selected Movie
@@ -53,6 +72,19 @@ app.delete("/movies/:id", async (req, res) => {
   const request = await database`DELETE FROM movies WHERE id=${id}`;
   res.send("Data deleted");
 });
+
+// ------------------------
+
+// -- Endpoint Cinemas -- //
+
+// ------------------------
+
+// -- Endpoint User -- //
+// 1. /users
+// 2. /users/me
+// 3. /users/register
+// 4. /users/login
+// 5. /users/edit
 
 app.listen(port, () => {
   console.log(`http://localhost:${port}`);
