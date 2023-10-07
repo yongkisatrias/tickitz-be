@@ -6,6 +6,7 @@ const port = process.env.PORT;
 const database = require("./database");
 const helmet = require("helmet");
 const cors = require("cors");
+const bcrypt = require("bcrypt");
 
 const corsOptions = {
   origin: "*",
@@ -25,7 +26,7 @@ app.use(cors(corsOptions));
 app.use(helmet());
 
 // -- Endpoint Movies -- //
-// Get All Movies
+// Get All Movies (/movies)
 app.get("/movies", async (req, res) => {
   try {
     const request = await database`SELECT id, name, duration, genres, poster FROM movies`;
@@ -44,7 +45,7 @@ app.get("/movies", async (req, res) => {
   }
 });
 
-// Get Selected Movie
+// Get Selected Movie (/movies/:id)
 app.get("/movies/:id", async (req, res) => {
   try {
     const { id } = req.params;
@@ -63,7 +64,7 @@ app.get("/movies/:id", async (req, res) => {
     });
   }
 });
-// New Movie
+// New Movie (/movies)
 app.post("/movies", async (req, res) => {
   try {
     const { name, release_date, duration, genres, directed_by, casts, synopsis, poster } = req.body;
@@ -155,10 +156,15 @@ app.post("/users/register", async (req, res) => {
       });
     }
 
+    // hash password
+    const saltRounds = 10;
+    const salt = bcrypt.genSaltSync(saltRounds);
+    const hash = bcrypt.hashSync(password, salt);
+
     const request = await database`INSERT INTO users
       (first_name, last_name, phone_number, email, password, photo_profile)
     values
-      (${first_name}, ${last_name}, ${phone_number}, ${email}, ${password}, ${photo_profile}) RETURNING id`;
+      (${first_name}, ${last_name}, ${phone_number}, ${email}, ${hash}, ${photo_profile}) RETURNING id`;
 
     if (request.length > 0) {
       res.status(201).json({
