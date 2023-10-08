@@ -316,6 +316,37 @@ app.put("/users/edit", checkJwt, async (req, res) => {
   }
 });
 
+// Edit Profil Password (/users/edit/password)
+app.put("/users/edit/password", checkJwt, async (req, res) => {
+  try {
+    const token = req.headers.authorization.slice(7);
+    const decoded = jwt.verify(token, process.env.APP_SECRET_TOKEN);
+    const { id } = decoded;
+
+    const columns = ["password"];
+
+    // hash password
+    const saltRounds = 10;
+    const salt = bcrypt.genSaltSync(saltRounds);
+    const hash = bcrypt.hashSync(req.body.password, salt);
+
+    const request = await database`UPDATE users SET ${database({ password: hash }, columns)} WHERE id = ${id} RETURNING id`;
+
+    if (request.length > 0) {
+      res.status(200).json({
+        status: true,
+        message: "Update data success",
+      });
+    }
+  } catch (error) {
+    res.status(502).json({
+      status: false,
+      message: "Something wrong in our server",
+      data: [],
+    });
+  }
+});
+
 // ------------------------
 
 app.listen(port, () => {
