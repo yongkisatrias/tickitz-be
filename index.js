@@ -289,7 +289,34 @@ app.post("/users/login", async (req, res) => {
   }
 });
 
-// /users/edit
+// Edit Profil (/users/edit)
+app.put("/users/edit", checkJwt, async (req, res) => {
+  try {
+    const token = req.headers.authorization.slice(7);
+    const decoded = jwt.verify(token, process.env.APP_SECRET_TOKEN);
+    const { id } = decoded;
+
+    const columns = ["first_name", "last_name", "phone_number", "email", "photo_profile"];
+
+    const request = await database`
+      UPDATE users SET ${database(req.body, columns)} WHERE id = ${id} RETURNING id`;
+
+    if (request.length > 0) {
+      res.status(200).json({
+        status: true,
+        message: "Update data success",
+      });
+    }
+  } catch (error) {
+    res.status(502).json({
+      status: false,
+      message: "Something wrong in our server",
+      data: [],
+    });
+  }
+});
+
+// ------------------------
 
 app.listen(port, () => {
   console.log(`http://localhost:${port}`);
