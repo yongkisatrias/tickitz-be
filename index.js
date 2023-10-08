@@ -134,9 +134,7 @@ app.put("/movies/:id", async (req, res) => {
     const { id } = req.params;
     const columns = ["name", "release_date", "duration", "genres", "directed_by", "casts", "synopsis", "poster"];
 
-    const request = await database`
-      UPDATE movies SET ${database(req.body, columns)} WHERE id = ${id} RETURNING id
-    `;
+    const request = await database`UPDATE movies SET ${database(req.body, columns)} WHERE id = ${id} RETURNING id`;
 
     if (request.length > 0) {
       res.json({
@@ -145,7 +143,6 @@ app.put("/movies/:id", async (req, res) => {
       });
     }
   } catch (error) {
-    console.log(error);
     res.status(502).json({
       status: false,
       message: "Something wrong in our server",
@@ -251,9 +248,30 @@ app.post("/cinemas", async (req, res) => {
   }
 });
 
-// Update Cinema
+// Update Cinema (cinemas/:id)
+app.put("/cinemas/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const columns = ["movie_id", "name", "city", "addres", "show_times", "price", "logo"];
 
-// Delete Cinema
+    const request = await database`UPDATE cinemas SET ${database(req.body, columns)} WHERE id = ${id} RETURNING id`;
+
+    if (request.length > 0) {
+      res.status(202).json({
+        status: true,
+        message: "Update data success",
+      });
+    }
+  } catch (error) {
+    res.status(502).json({
+      status: false,
+      message: "Something wrong in our server",
+      data: [],
+    });
+  }
+});
+
+// Delete Cinema (/cinemas/:id)
 app.delete("/cinemas/:id", async (req, res) => {
   try {
     const { id } = req.params;
