@@ -7,6 +7,7 @@ const database = require("./database");
 const helmet = require("helmet");
 const cors = require("cors");
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 
 const corsOptions = {
   origin: "*",
@@ -144,7 +145,7 @@ app.get("/users", async (req, res) => {
   }
 });
 
-// /users/me
+// Get Detail Profil (/users/me)
 
 // Register (/users/register)
 app.post("/users/register", async (req, res) => {
@@ -221,9 +222,12 @@ app.post("/users/login", async (req, res) => {
     const isMatch = bcrypt.compareSync(password, checkEmail[0].password);
 
     if (isMatch) {
+      const token = jwt.sign(checkEmail[0], process.env.APP_SECRET_TOKEN);
+
       res.status(200).json({
         status: true,
         message: "Login success",
+        accessToken: token,
         data: checkEmail,
       });
     } else {
