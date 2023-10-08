@@ -26,6 +26,30 @@ app.use(cors(corsOptions));
 // helmet
 app.use(helmet());
 
+// Middleware Function
+const checkJwt = async (req, res, next) => {
+  try {
+    const token = req.headers.authorization.slice(7);
+    const decoded = jwt.verify(token, process.env.APP_SECRET_TOKEN);
+
+    if (decoded) {
+      next();
+    } else {
+      res.status(401).json({
+        status: false,
+        message: "Token incorrect",
+        data: [],
+      });
+    }
+  } catch (error) {
+    res.status(401).json({
+      status: false,
+      message: "Token incorrect",
+      data: [],
+    });
+  }
+};
+
 // -- Endpoint Movies -- //
 // Get All Movies (/movies)
 app.get("/movies", async (req, res) => {
@@ -146,6 +170,20 @@ app.get("/users", async (req, res) => {
 });
 
 // Get Detail Profil (/users/me)
+app.get("/users/me", checkJwt, async (req, res) => {
+  try {
+    res.status(200).json({
+      status: true,
+      message: "Get data success",
+    });
+  } catch (error) {
+    res.status(502).json({
+      status: false,
+      message: "Something wrong in our server",
+      data: [],
+    });
+  }
+});
 
 // Register (/users/register)
 app.post("/users/register", async (req, res) => {
