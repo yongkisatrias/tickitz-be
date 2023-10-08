@@ -156,9 +156,22 @@ app.put("/movies/:id", async (req, res) => {
 
 // Delete Movie (/movies/:id)
 app.delete("/movies/:id", async (req, res) => {
-  const id = Number(req.params.id);
-  const request = await database`DELETE FROM movies WHERE id=${id}`;
-  res.send("Data deleted");
+  try {
+    const { id } = req.params;
+    const request = await database`DELETE FROM movies WHERE id = ${id}`;
+
+    res.json({
+      status: true,
+      message: "Delete data success",
+      data: request,
+    });
+  } catch (error) {
+    res.status(502).json({
+      status: false,
+      message: "Something wrong in our server",
+      data: [],
+    });
+  }
 });
 
 // ------------------------
