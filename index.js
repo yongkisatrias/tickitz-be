@@ -165,6 +165,26 @@ app.get("/cinemas", async (req, res) => {
   }
 });
 
+// Get Selected Cinema (/cinema/:id)
+app.get("/cinemas/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const request = await database`SELECT * FROM cinemas WHERE id = ${id}`;
+
+    res.status(200).json({
+      status: true,
+      message: "Get data success",
+      data: request,
+    });
+  } catch (error) {
+    res.status(502).json({
+      status: false,
+      message: "Something wrong in our server",
+      data: [],
+    });
+  }
+});
+
 // ------------------------
 
 // -- Endpoint User -- //
