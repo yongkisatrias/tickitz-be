@@ -130,10 +130,28 @@ app.post("/movies", async (req, res) => {
 
 // Update Movie (/movies/:id)
 app.put("/movies/:id", async (req, res) => {
-  const id = Number(req.params.id);
-  const { name, release_date, duration, genres, directed_by, casts, synopsis, poster } = req.body;
-  const request = await database`UPDATE movies SET name=${name}, release_date=${release_date}, duration=${duration}, genres=${genres}, directed_by=${directed_by}, casts=${casts}, synopsis=${synopsis}, poster=${poster} WHERE id=${id}`;
-  res.send("Data updated");
+  try {
+    const { id } = req.params;
+    const columns = ["name", "release_date", "duration", "genres", "directed_by", "casts", "synopsis", "poster"];
+
+    const request = await database`
+      UPDATE movies SET ${database(req.body, columns)} WHERE id = ${id} RETURNING id
+    `;
+
+    if (request.length > 0) {
+      res.json({
+        status: true,
+        message: "Update data success",
+      });
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(502).json({
+      status: false,
+      message: "Something wrong in our server",
+      data: [],
+    });
+  }
 });
 
 // Delete Movie (/movies/:id)
