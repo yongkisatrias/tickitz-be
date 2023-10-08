@@ -172,9 +172,15 @@ app.get("/users", async (req, res) => {
 // Get Detail Profil (/users/me)
 app.get("/users/me", checkJwt, async (req, res) => {
   try {
+    const token = req.headers.authorization.slice(7);
+    const decoded = jwt.verify(token, process.env.APP_SECRET_TOKEN);
+
+    const request = await database`SELECT * FROM users WHERE id = ${decoded.id}`;
+
     res.status(200).json({
       status: true,
       message: "Get data success",
+      data: request,
     });
   } catch (error) {
     res.status(502).json({
