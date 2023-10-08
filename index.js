@@ -128,7 +128,7 @@ app.post("/movies", async (req, res) => {
   }
 });
 
-// Update Movie
+// Update Movie (/movies/:id)
 app.put("/movies/:id", async (req, res) => {
   const id = Number(req.params.id);
   const { name, release_date, duration, genres, directed_by, casts, synopsis, poster } = req.body;
@@ -136,7 +136,7 @@ app.put("/movies/:id", async (req, res) => {
   res.send("Data updated");
 });
 
-// Delete Movie
+// Delete Movie (/movies/:id)
 app.delete("/movies/:id", async (req, res) => {
   const id = Number(req.params.id);
   const request = await database`DELETE FROM movies WHERE id=${id}`;
@@ -146,6 +146,24 @@ app.delete("/movies/:id", async (req, res) => {
 // ------------------------
 
 // -- Endpoint Cinemas -- //
+// Get All Cinemas (/cinemas)
+app.get("/cinemas", async (req, res) => {
+  try {
+    const request = await database`SELECT id, movie_id, name, city, addres, price, logo FROM cinemas`;
+
+    res.status(200).json({
+      status: true,
+      message: "Get data success",
+      data: request,
+    });
+  } catch (error) {
+    res.status(502).json({
+      status: false,
+      message: "Something wrong in our server",
+      data: [],
+    });
+  }
+});
 
 // ------------------------
 
@@ -350,13 +368,8 @@ app.put("/users/edit/password", checkJwt, async (req, res) => {
 // ------------------------
 
 app.listen(port, () => {
-  console.log(`http://localhost:${port}`);
+  console.log(`Example app listening on http://localhost:${port}`);
 });
-
-// // grant access for express can accept input from outside
-// app.use(express.urlencoded({ extended: false }));
-// // parse application/json
-// app.use(express.json());
 
 // // MOVIES START
 // app.get("/movies", async (req, res) => {
@@ -505,82 +518,3 @@ app.listen(port, () => {
 //   }
 // });
 // // CINEMA END
-
-// // --------------------------------- //
-
-// // USER START
-// app.get("/users", async (req, res) => {
-//   try {
-//     const request = await database`SELECT * FROM users`;
-
-//     res.status(200).json({
-//       status: true,
-//       message: "Get data success",
-//       data: request,
-//     });
-//   } catch (error) {
-//     res.status(502).json({
-//       status: false,
-//       message: "Something wrong in our server",
-//       data: [],
-//     });
-//   }
-// });
-
-// app.get("/users/:id", async (req, res) => {
-//   try {
-//     const { id } = req.params;
-//     const request = await database`SELECT * FROM users WHERE id = ${id}`;
-
-//     res.status(200).json({
-//       status: true,
-//       message: "Get data success",
-//       data: request,
-//     });
-//   } catch (error) {
-//     res.status(502).json({
-//       status: false,
-//       message: "Something wrong in our server",
-//       data: [],
-//     });
-//   }
-// });
-
-// app.post("/users", async (req, res) => {
-//   try {
-//     const { first_name, last_name, phone_number, email, password, photo_profile } = req.body;
-
-//     const isInputValid = first_name && last_name && phone_number && email && password && photo_profile;
-
-//     // check if input is valid
-//     if (!isInputValid) {
-//       res.status(400).json({
-//         status: false,
-//         message: "Bad input, please make sure your input is completed",
-//       });
-//     }
-
-//     const request = await database`INSERT INTO users
-//     (first_name, last_name, phone_number, email, password, photo_profile)
-//     values
-//       (${first_name}, ${last_name}, ${phone_number}, ${email}, ${password}, ${photo_profile}) RETURNING id`;
-
-//     if (request.length > 0) {
-//       res.status(201).json({
-//         status: true,
-//         message: "Insert data success",
-//       });
-//     }
-//   } catch (error) {
-//     res.status(502).json({
-//       status: false,
-//       message: "Something wrong in our server",
-//       data: [],
-//     });
-//   }
-// });
-// // USER END
-
-// app.listen(port, () => {
-//   console.log(`Example app listening on port ${port}`);
-// });
