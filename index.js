@@ -89,6 +89,7 @@ app.get("/movies/:id", async (req, res) => {
     });
   }
 });
+
 // New Movie (/movies)
 app.post("/movies", async (req, res) => {
   try {
@@ -114,7 +115,7 @@ app.post("/movies", async (req, res) => {
     if (request.length > 0) {
       res.status(201).json({
         status: true,
-        message: "Insert data success",
+        message: "Insert new movie success",
       });
 
       return;
@@ -137,10 +138,12 @@ app.put("/movies/:id", async (req, res) => {
     const request = await database`UPDATE movies SET ${database(req.body, columns)} WHERE id = ${id} RETURNING id`;
 
     if (request.length > 0) {
-      res.json({
+      res.status(202).json({
         status: true,
-        message: "Update data success",
+        message: "Update movie success",
       });
+
+      return;
     }
   } catch (error) {
     res.status(502).json({
@@ -157,9 +160,9 @@ app.delete("/movies/:id", async (req, res) => {
     const { id } = req.params;
     const request = await database`DELETE FROM movies WHERE id = ${id}`;
 
-    res.json({
+    res.status(200).json({
       status: true,
-      message: "Delete data success",
+      message: "Delete movie success",
       data: request,
     });
   } catch (error) {
@@ -226,6 +229,8 @@ app.post("/cinemas", async (req, res) => {
         status: false,
         message: "Bad input, please make sure your input is completed",
       });
+
+      return;
     }
 
     const request = await database`INSERT INTO cinemas
@@ -236,8 +241,10 @@ app.post("/cinemas", async (req, res) => {
     if (request.length > 0) {
       res.status(201).json({
         status: true,
-        message: "Insert data success",
+        message: "Insert cinema success",
       });
+
+      return;
     }
   } catch (error) {
     res.status(502).json({
@@ -259,8 +266,10 @@ app.put("/cinemas/:id", async (req, res) => {
     if (request.length > 0) {
       res.status(202).json({
         status: true,
-        message: "Update data success",
+        message: "Update cinema success",
       });
+
+      return;
     }
   } catch (error) {
     res.status(502).json({
@@ -450,6 +459,8 @@ app.put("/users/edit", checkJwt, async (req, res) => {
         status: true,
         message: "Update data success",
       });
+
+      return;
     }
   } catch (error) {
     res.status(502).json({
@@ -481,6 +492,8 @@ app.put("/users/edit/password", checkJwt, async (req, res) => {
         status: true,
         message: "Update data success",
       });
+
+      return;
     }
   } catch (error) {
     res.status(502).json({
