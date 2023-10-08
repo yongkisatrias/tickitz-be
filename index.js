@@ -251,6 +251,28 @@ app.post("/cinemas", async (req, res) => {
   }
 });
 
+// Update Cinema
+
+// Delete Cinema
+app.delete("/cinemas/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const request = await database`DELETE FROM cinemas WHERE id = ${id}`;
+
+    res.status(200).json({
+      status: true,
+      message: "Delete data success",
+      data: request,
+    });
+  } catch (error) {
+    res.status(502).json({
+      status: false,
+      message: "Something wrong in our server",
+      data: [],
+    });
+  }
+});
+
 // ------------------------
 
 // -- Endpoint User -- //
