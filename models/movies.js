@@ -16,9 +16,9 @@ const modelMovies = {
   newMovie: async (payload) => {
     const { name, release_date, duration, genres, directed_by, casts, synopsis, poster } = payload;
     const request = await database`
-    INSERT INTO movies 
+    INSERT INTO movies
         (name, release_date, duration, genres, directed_by, casts, synopsis, poster)
-    VALUES 
+    VALUES
         (${name}, ${release_date}, ${duration}, ${genres}, ${directed_by}, ${casts}, ${synopsis}, ${poster}) RETURNING id`;
 
     return request;

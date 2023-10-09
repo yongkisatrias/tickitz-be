@@ -1,11 +1,11 @@
-const database = require("../database");
 const router = require("express").Router();
+const cinemasModel = require("../models/cinemas");
 
 // -- Endpoint Cinemas -- //
 // Get All Cinemas (/cinemas)
 router.get("/cinemas", async (req, res) => {
   try {
-    const request = await database`SELECT id, movie_id, name, city, addres, price, logo FROM cinemas`;
+    const request = await cinemasModel.getAllCinemas();
 
     res.status(200).json({
       status: true,
@@ -25,7 +25,7 @@ router.get("/cinemas", async (req, res) => {
 router.get("/cinemas/:id", async (req, res) => {
   try {
     const { id } = req.params;
-    const request = await database`SELECT * FROM cinemas WHERE id = ${id}`;
+    const request = await cinemasModel.getSelectedCinema(id);
 
     res.status(200).json({
       status: true,
@@ -58,10 +58,15 @@ router.post("/cinemas", async (req, res) => {
       return;
     }
 
-    const request = await database`INSERT INTO cinemas
-        (movie_id, name, city, addres, show_times, price, logo)
-      values
-        (${movie_id}, ${name}, ${city}, ${addres}, ${show_times}, ${price}, ${logo}) RETURNING id`;
+    const request = await cinemasModel.newCinema({
+      movie_id,
+      name,
+      city,
+      addres,
+      show_times,
+      price,
+      logo,
+    });
 
     if (request.length > 0) {
       res.status(201).json({
@@ -86,7 +91,7 @@ router.put("/cinemas/:id", async (req, res) => {
     const { id } = req.params;
     const columns = ["movie_id", "name", "city", "addres", "show_times", "price", "logo"];
 
-    const request = await database`UPDATE cinemas SET ${database(req.body, columns)} WHERE id = ${id} RETURNING id`;
+    const request = await cinemasModel.updateCinema(req.body, columns, id);
 
     if (request.length > 0) {
       res.status(202).json({
@@ -109,7 +114,7 @@ router.put("/cinemas/:id", async (req, res) => {
 router.delete("/cinemas/:id", async (req, res) => {
   try {
     const { id } = req.params;
-    const request = await database`DELETE FROM cinemas WHERE id = ${id}`;
+    const request = await cinemasModel.deleteCinema(id);
 
     res.status(200).json({
       status: true,
