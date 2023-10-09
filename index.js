@@ -6,15 +6,20 @@ const port = process.env.PORT;
 const helmet = require("helmet");
 const cors = require("cors");
 
+const corsOptions = {
+  origin: "*",
+  methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+};
+
 // import router
 const moviesRouter = require("./routers/movies");
 const cinemasRouter = require("./routers/cinemas");
 const usersRouter = require("./routers/users");
 
-const corsOptions = {
-  origin: "*",
-  methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-};
+// use routers
+app.use(moviesRouter);
+app.use(cinemasRouter);
+app.use(usersRouter);
 
 // grant access for express can accept input from outside
 app.use(express.urlencoded({ extended: false }));
@@ -27,10 +32,6 @@ app.use(cors(corsOptions));
 
 // helmet
 app.use(helmet());
-
-app.use(moviesRouter);
-app.use(cinemasRouter);
-app.use(usersRouter);
 
 app.listen(port, () => {
   console.log(`Example app listening on http://localhost:${port}`);

@@ -1,6 +1,7 @@
 const database = require("../database");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+
 const router = require("express").Router();
 
 // Middleware Function
