@@ -1,8 +1,7 @@
-const database = require("../database");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-
 const router = require("express").Router();
+const usersModel = require("../models/users");
 
 // Middleware Function
 const checkJwt = async (req, res, next) => {
@@ -32,29 +31,7 @@ const checkJwt = async (req, res, next) => {
 // Get All Users (/users)
 router.get("/users", async (req, res) => {
   try {
-    const request = await database`SELECT first_name, last_name, phone_number, photo_profile FROM users`;
-
-    res.status(200).json({
-      status: true,
-      message: "Get data success",
-      data: request,
-    });
-  } catch (error) {
-    res.status(502).json({
-      status: false,
-      message: "Something wrong in our server",
-      data: [],
-    });
-  }
-});
-
-// Get Detail Profil (/users/me)
-router.get("/users/me", checkJwt, async (req, res) => {
-  try {
-    const token = req.headers.authorization.slice(7);
-    const decoded = jwt.verify(token, process.env.APP_SECRET_TOKEN);
-
-    const request = await database`SELECT * FROM users WHERE id = ${decoded.id}`;
+    const request = await usersModel.getAllUsers();
 
     res.status(200).json({
       status: true,
@@ -86,7 +63,7 @@ router.post("/users/register", async (req, res) => {
       return;
     }
     // check unique email
-    const checkEmail = await database`SELECT * FROM users WHERE email = ${email}`;
+    const checkEmail = await usersModel.checkEmail(email);
 
     if (checkEmail.length > 0) {
       res.status(400).json({
@@ -102,10 +79,14 @@ router.post("/users/register", async (req, res) => {
     const salt = bcrypt.genSaltSync(saltRounds);
     const hash = bcrypt.hashSync(password, salt);
 
-    const request = await database`INSERT INTO users
-        (first_name, last_name, phone_number, email, password, photo_profile)
-      values
-        (${first_name}, ${last_name}, ${phone_number}, ${email}, ${hash}, ${photo_profile}) RETURNING id`;
+    const request = await usersModel.register({
+      first_name,
+      last_name,
+      phone_number,
+      email,
+      hash,
+      photo_profile,
+    });
 
     if (request.length > 0) {
       res.status(201).json({
@@ -129,7 +110,7 @@ router.post("/users/login", async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    const checkEmail = await database`SELECT * FROM users WHERE email = ${email}`;
+    const checkEmail = await usersModel.login(email);
 
     // check if email registered
     if (checkEmail.length == 0) {
@@ -168,7 +149,29 @@ router.post("/users/login", async (req, res) => {
   }
 });
 
-// Edit Profil (/users/edit)
+// Get Detail Profil (/users/me)
+router.get("/users/me", checkJwt, async (req, res) => {
+  try {
+    const token = req.headers.authorization.slice(7);
+    const decoded = jwt.verify(token, process.env.APP_SECRET_TOKEN);
+
+    const request = await usersModel.getDetailProfil(decoded);
+
+    res.status(200).json({
+      status: true,
+      message: "Get data success",
+      data: request,
+    });
+  } catch (error) {
+    res.status(502).json({
+      status: false,
+      message: "Something wrong in our server",
+      data: [],
+    });
+  }
+});
+
+// Edit Profile (/users/edit)
 router.put("/users/edit", checkJwt, async (req, res) => {
   try {
     const token = req.headers.authorization.slice(7);
@@ -177,8 +180,7 @@ router.put("/users/edit", checkJwt, async (req, res) => {
 
     const columns = ["first_name", "last_name", "phone_number", "email", "photo_profile"];
 
-    const request = await database`
-        UPDATE users SET ${database(req.body, columns)} WHERE id = ${id} RETURNING id`;
+    const request = await usersModel.editProfile(req.body, columns, id);
 
     if (request.length > 0) {
       res.status(200).json({
@@ -197,7 +199,7 @@ router.put("/users/edit", checkJwt, async (req, res) => {
   }
 });
 
-// Edit Profil Password (/users/edit/password)
+// Edit Profile Password (/users/edit/password)
 router.put("/users/edit/password", checkJwt, async (req, res) => {
   try {
     const token = req.headers.authorization.slice(7);
@@ -211,7 +213,7 @@ router.put("/users/edit/password", checkJwt, async (req, res) => {
     const salt = bcrypt.genSaltSync(saltRounds);
     const hash = bcrypt.hashSync(req.body.password, salt);
 
-    const request = await database`UPDATE users SET ${database({ password: hash }, columns)} WHERE id = ${id} RETURNING id`;
+    const request = await usersModel.editProfilePassword(hash, columns, id);
 
     if (request.length > 0) {
       res.status(200).json({
