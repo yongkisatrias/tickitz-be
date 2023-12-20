@@ -67,4 +67,4 @@ API endpoint list are also available as published postman documentation
 
 ## Related Project
 
-🚀 [`Back-End Deployment`](tickitz-be-yongki.vercel.app/)
+🚀 [`Back-End Deployment`](https://tickitz-be-yongki.vercel.app/)
