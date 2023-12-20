@@ -67,4 +67,4 @@ API endpoint list are also available as published postman documentation
 
 ## Related Project
 
-🚀 [`Demo API`](https://documenter.getpostman.com/view/30079177/2s9YkoehQM)
+🚀 [`Demo API`](tickitz-be-yongki.vercel.app/)
