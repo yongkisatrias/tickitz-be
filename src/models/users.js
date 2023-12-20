@@ -8,12 +8,14 @@ const modelUsers = {
     return request;
   },
   checkEmail: async (email) => {
-    const checkEmail = await database`SELECT * FROM users WHERE email = ${email}`;
+    const checkEmail =
+      await database`SELECT * FROM users WHERE email = ${email}`;
 
     return checkEmail;
   },
   register: async (payload) => {
-    const { first_name, last_name, phone_number, email, hash, photo_profile } = payload;
+    const { first_name, last_name, phone_number, email, hash, photo_profile } =
+      payload;
     const request = await database`
     INSERT INTO users
         (first_name, last_name, phone_number, email, password, photo_profile)
@@ -36,13 +38,19 @@ const modelUsers = {
   },
   editProfile: async (reqBody, columns, id) => {
     const request = await database`
-    UPDATE users SET ${database(reqBody, columns)} WHERE id = ${id} RETURNING id`;
+    UPDATE users SET ${database(
+      reqBody,
+      columns
+    )} WHERE id = ${id} RETURNING id`;
 
     return request;
   },
   editProfilePassword: async (hash, columns, id) => {
     const request = await database`
-    UPDATE users SET ${database({ password: hash }, columns)} WHERE id = ${id} RETURNING id`;
+    UPDATE users SET ${database(
+      { password: hash },
+      columns
+    )} WHERE id = ${id} RETURNING id`;
 
     return request;
   },

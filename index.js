@@ -7,9 +7,9 @@ const helmet = require("helmet");
 const cors = require("cors");
 
 // import router
-const moviesRouter = require("./routers/movies");
-const cinemasRouter = require("./routers/cinemas");
-const usersRouter = require("./routers/users");
+const moviesRouter = require("./src/routers/movies");
+const cinemasRouter = require("./src/routers/cinemas");
+const usersRouter = require("./src/routers/users");
 
 const corsOptions = {
   origin: "*",
@@ -32,6 +32,11 @@ app.use(helmet());
 app.use(moviesRouter);
 app.use(cinemasRouter);
 app.use(usersRouter);
+
+// Home
+app.get("/", (req, res) => {
+  res.send("API For Tickitz");
+});
 
 app.listen(port, () => {
   console.log(`Example app listening on http://localhost:${port}`);

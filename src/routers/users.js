@@ -32,18 +32,36 @@ const checkJwt = async (req, res, next) => {
 router.get("/users", usersController._getAllUsers);
 
 // Register (/users/register)
-router.post("/users/register", usersController._validationRegister, usersController._register);
+router.post(
+  "/users/register",
+  usersController._validationRegister,
+  usersController._register
+);
 
 // Login (/users/login)
-router.post("/users/login", usersController._validationLogin, usersController._login);
+router.post(
+  "/users/login",
+  usersController._validationLogin,
+  usersController._login
+);
 
 // Get Detail Profil (/users/me)
 router.get("/users/me", checkJwt, usersController._getDetailUser);
 
 // Edit Profile (/users/edit)
-router.put("/users/edit", checkJwt, usersController._validationEditProfile, usersController._editProfile);
+router.put(
+  "/users/edit",
+  checkJwt,
+  usersController._validationEditProfile,
+  usersController._editProfile
+);
 
 // Edit Profile Password (/users/edit/password)
-router.put("/users/edit/password", checkJwt, usersController._validationEditPassword, usersController._editPassword);
+router.put(
+  "/users/edit/password",
+  checkJwt,
+  usersController._validationEditPassword,
+  usersController._editPassword
+);
 
 module.exports = router;

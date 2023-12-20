@@ -9,10 +9,18 @@ router.get("/cinemas", cinemasController._getAllCinemas);
 router.get("/cinemas/:id", cinemasController._getSelectedCinema);
 
 // New Cinema (/cinemas)
-router.post("/cinemas", cinemasController._validationNewCinema, cinemasController._newCinema);
+router.post(
+  "/cinemas",
+  cinemasController._validationNewCinema,
+  cinemasController._newCinema
+);
 
 // Update Cinema (cinemas/:id)
-router.put("/cinemas/:id", cinemasController._validationUpdateCinema, cinemasController._updateCinema);
+router.put(
+  "/cinemas/:id",
+  cinemasController._validationUpdateCinema,
+  cinemasController._updateCinema
+);
 
 // Delete Cinema (/cinemas/:id)
 router.delete("/cinemas/:id", cinemasController._deleteCinema);

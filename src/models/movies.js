@@ -14,7 +14,16 @@ const modelMovies = {
     return request;
   },
   newMovie: async (payload) => {
-    const { name, release_date, duration, genres, directed_by, casts, synopsis, poster } = payload;
+    const {
+      name,
+      release_date,
+      duration,
+      genres,
+      directed_by,
+      casts,
+      synopsis,
+      poster,
+    } = payload;
     const request = await database`
     INSERT INTO movies
         (name, release_date, duration, genres, directed_by, casts, synopsis, poster)
@@ -25,7 +34,10 @@ const modelMovies = {
   },
   updateMovies: async (reqBody, columns, id) => {
     const request = await database`
-    UPDATE movies SET ${database(reqBody, columns)} WHERE id = ${id} RETURNING id`;
+    UPDATE movies SET ${database(
+      reqBody,
+      columns
+    )} WHERE id = ${id} RETURNING id`;
 
     return request;
   },

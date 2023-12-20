@@ -1,10 +1,10 @@
-const moviesModel = require("../models/movies");
+const cinemasModel = require("../models/cinemas");
 const { Validator } = require("node-input-validator");
 
-const moviesController = {
-  _getAllMovies: async (req, res) => {
+const cinemasController = {
+  _getAllCinemas: async (req, res) => {
     try {
-      const request = await moviesModel.getAllMovies();
+      const request = await cinemasModel.getAllCinemas();
 
       res.status(200).json({
         status: true,
@@ -19,10 +19,10 @@ const moviesController = {
       });
     }
   },
-  _getSelectedMovie: async (req, res) => {
+  _getSelectedCinema: async (req, res) => {
     try {
       const { id } = req.params;
-      const request = await moviesModel.getSelectedMovie(id);
+      const request = await cinemasModel.getSelectedCinema(id);
 
       res.status(200).json({
         status: true,
@@ -37,16 +37,15 @@ const moviesController = {
       });
     }
   },
-  _validationNewMovie: async (req, res, next) => {
+  _validationNewCinema: async (req, res, next) => {
     const schema = new Validator(req.body, {
+      movie_id: "required|integer",
       name: "required|minLength:1|maxLength:100",
-      release_date: "required|date",
-      duration: "required|maxLength:50",
-      genres: "required|array|arrayUnique",
-      directed_by: "required|maxLength:60",
-      casts: "required|array|arrayUnique",
-      synopsis: "required|maxLength:500",
-      poster: "required|url",
+      city: "required|minLength:1|maxLength:100",
+      addres: "required|minLength:1|maxLength:100",
+      show_times: "required|array|arrayUnique",
+      price: "required|integer",
+      logo: "required|url",
     });
 
     schema.check().then((matched) => {
@@ -61,24 +60,25 @@ const moviesController = {
       }
     });
   },
-  _newMovie: async (req, res) => {
+  _newCinema: async (req, res) => {
     try {
-      const { name, release_date, duration, genres, directed_by, casts, synopsis, poster } = req.body;
-      const request = await moviesModel.newMovie({
+      const { movie_id, name, city, addres, show_times, price, logo } =
+        req.body;
+
+      const request = await cinemasModel.newCinema({
+        movie_id,
         name,
-        release_date,
-        duration,
-        genres,
-        directed_by,
-        casts,
-        synopsis,
-        poster,
+        city,
+        addres,
+        show_times,
+        price,
+        logo,
       });
 
       if (request.length > 0) {
         res.status(201).json({
           status: true,
-          message: "Insert new movie success",
+          message: "Insert cinema success",
         });
 
         return;
@@ -91,16 +91,15 @@ const moviesController = {
       });
     }
   },
-  _validationUpdateMovie: async (req, res, next) => {
+  _validationUpdateCinema: async (req, res, next) => {
     const schema = new Validator(req.body, {
+      movie_id: "required|integer",
       name: "required|minLength:1|maxLength:100",
-      release_date: "required|date",
-      duration: "required|maxLength:50",
-      genres: "required|array|arrayUnique",
-      directed_by: "required|maxLength:60",
-      casts: "required|array|arrayUnique",
-      synopsis: "required|maxLength:500",
-      poster: "required|url",
+      city: "required|minLength:1|maxLength:100",
+      addres: "required|minLength:1|maxLength:100",
+      show_times: "required|array|arrayUnique",
+      price: "required|integer",
+      logo: "required|url",
     });
 
     schema.check().then((matched) => {
@@ -115,17 +114,25 @@ const moviesController = {
       }
     });
   },
-  _updateMovie: async (req, res) => {
+  _updateCinema: async (req, res) => {
     try {
       const { id } = req.params;
-      const columns = ["name", "release_date", "duration", "genres", "directed_by", "casts", "synopsis", "poster"];
+      const columns = [
+        "movie_id",
+        "name",
+        "city",
+        "addres",
+        "show_times",
+        "price",
+        "logo",
+      ];
 
-      const request = await moviesModel.updateMovies(req.body, columns, id);
+      const request = await cinemasModel.updateCinema(req.body, columns, id);
 
       if (request.length > 0) {
         res.status(202).json({
           status: true,
-          message: "Update movie success",
+          message: "Update cinema success",
         });
 
         return;
@@ -138,14 +145,14 @@ const moviesController = {
       });
     }
   },
-  _deleteMovies: async (req, res) => {
+  _deleteCinema: async (req, res) => {
     try {
       const { id } = req.params;
-      const request = await moviesModel.deleteMovie(id);
+      const request = await cinemasModel.deleteCinema(id);
 
       res.status(200).json({
         status: true,
-        message: "Delete movie success",
+        message: "Delete data success",
         data: request,
       });
     } catch (error) {
@@ -158,4 +165,4 @@ const moviesController = {
   },
 };
 
-module.exports = moviesController;
+module.exports = cinemasController;

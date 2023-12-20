@@ -45,7 +45,14 @@ const usersController = {
   },
   _register: async (req, res) => {
     try {
-      const { first_name, last_name, phone_number, email, password, photo_profile } = req.body;
+      const {
+        first_name,
+        last_name,
+        phone_number,
+        email,
+        password,
+        photo_profile,
+      } = req.body;
 
       // check unique email
       const checkEmail = await usersModel.checkEmail(email);
@@ -196,7 +203,13 @@ const usersController = {
       const decoded = jwt.verify(token, process.env.APP_SECRET_TOKEN);
       const { id } = decoded;
 
-      const columns = ["first_name", "last_name", "phone_number", "email", "photo_profile"];
+      const columns = [
+        "first_name",
+        "last_name",
+        "phone_number",
+        "email",
+        "photo_profile",
+      ];
 
       const request = await usersModel.editProfile(req.body, columns, id);
 

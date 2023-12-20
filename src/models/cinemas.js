@@ -25,7 +25,10 @@ const modelCinemas = {
   },
   updateCinema: async (reqBody, columns, id) => {
     const request = await database`
-    UPDATE cinemas SET ${database(reqBody, columns)} WHERE id = ${id} RETURNING id`;
+    UPDATE cinemas SET ${database(
+      reqBody,
+      columns
+    )} WHERE id = ${id} RETURNING id`;
 
     return request;
   },
