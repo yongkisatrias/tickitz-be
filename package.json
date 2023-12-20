@@ -4,10 +4,12 @@
   "description": "Backend for tickitz build with express",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon index.js",
-    "start": "node index.js"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node ./index.js",
+    "server": "node ./index.js",
+    "dev": "nodemon index.js"
   },
-  "author": "",
+  "author": "Yongki Satria Sanjaya",
   "license": "ISC",
   "dependencies": {
     "bcrypt": "^5.1.1",
