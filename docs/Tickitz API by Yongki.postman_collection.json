@@ -1,0 +1,463 @@
+{
+	"info": {
+		"_postman_id": "92f22a0f-b3a6-4511-b128-422a283f19db",
+		"name": "Tickitz API by Yongki",
+		"description": "Welcome to the Tickitz API documentation! This API is designed to provide developers with easy access to a vast collection of movies, cinema, user authentication.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "30079177"
+	},
+	"item": [
+		{
+			"name": "Movies",
+			"item": [
+				{
+					"name": "Get All Movies",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{production}}/movies",
+							"host": [
+								"{{production}}"
+							],
+							"path": [
+								"movies"
+							]
+						},
+						"description": "This API is used to retrieve data list movie that registered."
+					},
+					"response": []
+				},
+				{
+					"name": "Get Selected Movie",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{production}}/movies/1",
+							"host": [
+								"{{production}}"
+							],
+							"path": [
+								"movies",
+								"1"
+							]
+						},
+						"description": "This API is used to retrieve user data based on the specified ID."
+					},
+					"response": []
+				},
+				{
+					"name": "New Movie",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Up broh\",\r\n    \"release_date\": \"2009-07-29\",\r\n    \"duration\": \"1h 36m\",\r\n    \"genres\": [\"Animation\", \"Adventure\", \"Comedy\"],\r\n    \"directed_by\": \"Pete Docter\",\r\n    \"casts\": [\"Edward Asner\", \"Jordan Nagai\", \"John Ratzenberger\"],\r\n    \"synopsis\": \"As a boy, Carl Fredricksen wanted to explore South America and find the forbidden Paradise Falls. About 64 years later he gets to begin his journey along with Boy Scout Russell by lifting his house with thousands of balloons. On their journey, they make many new friends including a talking dog, and figure out that someone has evil plans. Carl soon realizes that this evildoer is his childhood idol.\",\r\n    \"poster\": \"https://lumiere-a.akamaihd.net/v1/images/p_up_19753_e6f911e3.jpeg\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{production}}/movies",
+							"host": [
+								"{{production}}"
+							],
+							"path": [
+								"movies"
+							]
+						},
+						"description": "This API is used to add new movie data."
+					},
+					"response": []
+				},
+				{
+					"name": "Update Movie",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Up\",\r\n    \"release_date\": \"2009-07-29\",\r\n    \"duration\": \"1h 36m\",\r\n    \"genres\": [\"Animation\", \"Adventure\", \"Comedy\"],\r\n    \"directed_by\": \"Pete Docter\",\r\n    \"casts\": [\"Edward Asner\", \"Jordan Nagai\", \"John Ratzenberger\"],\r\n    \"synopsis\": \"As a boy, Carl Fredricksen wanted to explore South America and find the forbidden Paradise Falls. About 64 years later he gets to begin his journey along with Boy Scout Russell by lifting his house with thousands of balloons. On their journey, they make many new friends including a talking dog, and figure out that someone has evil plans. Carl soon realizes that this evildoer is his childhood idol.\",\r\n    \"poster\": \"https://lumiere-a.akamaihd.net/v1/images/p_up_19753_e6f911e3.jpeg\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{production}}/movies/2",
+							"host": [
+								"{{production}}"
+							],
+							"path": [
+								"movies",
+								"2"
+							]
+						},
+						"description": "This API is used to update movie data by retrieving the ID of the movie whose data we want to update."
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Movie",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{production}}/movies/1",
+							"host": [
+								"{{production}}"
+							],
+							"path": [
+								"movies",
+								"1"
+							]
+						},
+						"description": "This API is utilized to delete a movie by calling the ID of the movie that needs to be removed."
+					},
+					"response": []
+				}
+			],
+			"description": "This folder contains various API endpoints, including get all movies, selected movies, add new movie, edit movie & delete movie."
+		},
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "Get All users",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{production}}/users",
+							"host": [
+								"{{production}}"
+							],
+							"path": [
+								"users"
+							]
+						},
+						"description": "The API is used to display all users who have registered data when performing registration."
+					},
+					"response": []
+				},
+				{
+					"name": "Register",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"first_name\": \"Bayem\",\r\n    \"last_name\": \"Sore\",\r\n    \"phone_number\": \"08123456789\",\r\n    \"email\": \"bayemsore@gmail.com\",\r\n    \"password\": \"bayemsore\",\r\n    \"photo_profile\": \"https://postpangandaran.com/photo/plugin/article/2023/1693277962_1-org.jpeg\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{production}}/users/register",
+							"host": [
+								"{{production}}"
+							],
+							"path": [
+								"users",
+								"register"
+							]
+						},
+						"description": "The API is used to add new user data, allowing them to log in later."
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"bayemsore@gmail.com\",\r\n    \"password\": \"bayemsore\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{production}}/users/login",
+							"host": [
+								"{{production}}"
+							],
+							"path": [
+								"users",
+								"login"
+							]
+						},
+						"description": "This API is used for logging in using the email and password associated with the registration process. The authentication process ensures that users can access the API and perform operations based on the email and password used during registration."
+					},
+					"response": []
+				},
+				{
+					"name": "Get Detail Profile",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzAsImZpcnN0X25hbWUiOiJCYXllbSIsImxhc3RfbmFtZSI6IlNvcmUiLCJwaG9uZV9udW1iZXIiOiIwODEyMzQ1Njc4OSIsImVtYWlsIjoiYmF5ZW1zb3JlQGdtYWlsLmNvbSIsInBhc3N3b3JkIjoiJDJiJDEwJGZORDB2WWFnb0QyREhucUcxZ0htcmVhRW5rT1I4eTNHcjRaVEUvTU9aeVMuZXBrdGVIUnRXIiwicGhvdG9fcHJvZmlsZSI6Imh0dHBzOi8vcG9zdHBhbmdhbmRhcmFuLmNvbS9waG90by9wbHVnaW4vYXJ0aWNsZS8yMDIzLzE2OTMyNzc5NjJfMS1vcmcuanBlZyIsImlhdCI6MTY5Njg1NTg2NH0.XyFChCvv3RO7JG2TFi33mM3VXrwcLxX9Zyc8KNApBRc",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{production}}/users/me",
+							"host": [
+								"{{production}}"
+							],
+							"path": [
+								"users",
+								"me"
+							]
+						},
+						"description": "This API is used to display specific user data using a bearer token."
+					},
+					"response": []
+				},
+				{
+					"name": "Edit User",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzAsImZpcnN0X25hbWUiOiJCYXllbSIsImxhc3RfbmFtZSI6IlNvcmUiLCJwaG9uZV9udW1iZXIiOiIwODEyMzQ1Njc4OSIsImVtYWlsIjoiYmF5ZW1zb3JlQGdtYWlsLmNvbSIsInBhc3N3b3JkIjoiJDJiJDEwJGZORDB2WWFnb0QyREhucUcxZ0htcmVhRW5rT1I4eTNHcjRaVEUvTU9aeVMuZXBrdGVIUnRXIiwicGhvdG9fcHJvZmlsZSI6Imh0dHBzOi8vcG9zdHBhbmdhbmRhcmFuLmNvbS9waG90by9wbHVnaW4vYXJ0aWNsZS8yMDIzLzE2OTMyNzc5NjJfMS1vcmcuanBlZyIsImlhdCI6MTY5Njg1NTg2NH0.XyFChCvv3RO7JG2TFi33mM3VXrwcLxX9Zyc8KNApBRc",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"first_name\": \"Bayem\",\r\n    \"last_name\": \"Sore\",\r\n    \"phone_number\": \"08123456789\",\r\n    \"email\": \"bayemsore@gmail.com\",\r\n    \"photo_profile\": \"https://postpangandaran.com/photo/plugin/article/2023/1693277962_1-org.jpeg\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{production}}/users/edit",
+							"host": [
+								"{{production}}"
+							],
+							"path": [
+								"users",
+								"edit"
+							]
+						},
+						"description": "The Tickitz API is designed for modifying existing data with new information, and accessing data requires the use of a bearer token obtained during login."
+					},
+					"response": []
+				},
+				{
+					"name": "Edit Password User",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzAsImZpcnN0X25hbWUiOiJCYXllbSIsImxhc3RfbmFtZSI6IlNvcmUiLCJwaG9uZV9udW1iZXIiOiIwODEyMzQ1Njc4OSIsImVtYWlsIjoiYmF5ZW1zb3JlQGdtYWlsLmNvbSIsInBhc3N3b3JkIjoiJDJiJDEwJGZORDB2WWFnb0QyREhucUcxZ0htcmVhRW5rT1I4eTNHcjRaVEUvTU9aeVMuZXBrdGVIUnRXIiwicGhvdG9fcHJvZmlsZSI6Imh0dHBzOi8vcG9zdHBhbmdhbmRhcmFuLmNvbS9waG90by9wbHVnaW4vYXJ0aWNsZS8yMDIzLzE2OTMyNzc5NjJfMS1vcmcuanBlZyIsImlhdCI6MTY5Njg1NTg2NH0.XyFChCvv3RO7JG2TFi33mM3VXrwcLxX9Zyc8KNApBRc",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"password\": \"bayemsore\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{production}}/users/edit/password",
+							"host": [
+								"{{production}}"
+							],
+							"path": [
+								"users",
+								"edit",
+								"password"
+							]
+						},
+						"description": "The Tickitz API is designed to facilitate the modification of an existing password with a new one, requiring the use of a bearer token obtained during the login process to access the data."
+					},
+					"response": []
+				}
+			],
+			"description": "This folder contains various API endpoints, including get all users, register, login, get detail profil, edit user & edit password user."
+		},
+		{
+			"name": "Cinema",
+			"item": [
+				{
+					"name": "Get All Cinemas",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{production}}/cinemas",
+							"host": [
+								"{{production}}"
+							],
+							"path": [
+								"cinemas"
+							]
+						},
+						"description": "This API is used to display all cinema data that is already registered in the database."
+					},
+					"response": []
+				},
+				{
+					"name": "Get Selected Cinemas",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{production}}/cinemas/1",
+							"host": [
+								"{{production}}"
+							],
+							"path": [
+								"cinemas",
+								"1"
+							]
+						},
+						"description": "This API is used to display specific cinema data based on the called ID, and the data is already registered in the database."
+					},
+					"response": []
+				},
+				{
+					"name": "New Cinema",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"movie_id\": 1,\r\n    \"name\": \"CINEPOLIS LIPPO PLAZA JOGJA\",\r\n    \"city\": \"Yogyakarta\",\r\n    \"addres\": \"Jl. LAKSDA ADSUCIPTO no 32-34, Demangan Gondokusuman, D.I.Yogyakarta.\",\r\n    \"show_times\": [\"11:05\", \"13:45\", \"16:25\", \"19:05\", \"21:40\"],\r\n    \"price\": 35000,\r\n    \"logo\": \"https://delmarhighlandstowncenter.com/wp-content/uploads/2020/08/DMHTC_Listing_Gallery_Cinepolis-logo-1.jpg\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{production}}/cinemas",
+							"host": [
+								"{{production}}"
+							],
+							"path": [
+								"cinemas"
+							]
+						},
+						"description": "This API is used to add new cinema data."
+					},
+					"response": []
+				},
+				{
+					"name": "Update Cinema",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"movie_id\": 1,\r\n    \"name\": \"CINEPOLIS LIPPO PLAZA JOGJA\",\r\n    \"city\": \"Yogyakarta\",\r\n    \"addres\": \"Jl. LAKSDA ADSUCIPTO no 32-34, Demangan Gondokusuman, D.I.Yogyakarta.\",\r\n    \"show_times\": [\"11:05\", \"13:45\", \"16:25\", \"19:05\", \"21:40\"],\r\n    \"price\": 35000,\r\n    \"logo\": \"https://delmarhighlandstowncenter.com/wp-content/uploads/2020/08/DMHTC_Listing_Gallery_Cinepolis-logo-1.jpg\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{production}}/cinemas/19",
+							"host": [
+								"{{production}}"
+							],
+							"path": [
+								"cinemas",
+								"19"
+							]
+						},
+						"description": "The Tickitz API is utilized to edit previously registered cinema data. To use it, you must retrieve the cinema data by its corresponding ID that you wish to update."
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Cinemas",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{production}}/cinemas/19",
+							"host": [
+								"{{production}}"
+							],
+							"path": [
+								"cinemas",
+								"19"
+							]
+						},
+						"description": "This API is used to delete cinema data based on the cinema ID that needs to be removed."
+					},
+					"response": []
+				}
+			],
+			"description": "This folder contains various API endpoints, including get all cinema, selected cinema, add new cinema, update cinema & delete cinema."
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "production",
+			"value": "https://tickitz-be-yongki.vercel.app/",
+			"type": "string"
+		},
+		{
+			"key": "local",
+			"value": "http://localhost:8080/",
+			"type": "string"
+		}
+	]
+}
