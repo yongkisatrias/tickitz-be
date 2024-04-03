@@ -12,6 +12,7 @@
 - [Built With](#built-with)
 - [Installation](#installation)
 - [Documentation](#documentation)
+- [Demo](#demo)
 - [Related Project](#related-project)
 
 ## About The Project
@@ -65,6 +66,12 @@ API endpoint list are also available as published postman documentation
 
 [![Run in Postman](https://run.pstmn.io/button.svg)](https://documenter.getpostman.com/view/30079177/2s9YkoehQM)
 
+## Demo
+
+**https://tickitz-be-yongki.vercel.app/**
+
 ## Related Project
 
-🚀 [`Back-End Deployment`](https://tickitz-be-yongki.vercel.app/)
+You can see other projects on my personal portfolio website.
+
+🚀 [`My Web Portfolio`](https://yongki-portfolio.vercel.app/)
